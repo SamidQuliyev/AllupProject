@@ -1,0 +1,60 @@
+﻿@model Category
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create Category</h4>
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                <form method="post" enctype="multipart/form-data" class="forms-sample">
+
+                      <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name"  class="form-control">
+                        <span asp-validation-for="Name" class="alert-danger"></span>
+
+                    </div>
+               
+                    @if(Model.IsMain)
+                    {
+                      <div class="form-group " id="PhotoBox">
+                        <label asp-for="Photo"></label>
+                        <input asp-for="Photo"  >
+                        <span asp-validation-for="Photo" class="alert-danger"></span>
+
+                        </div>
+
+                    }
+                    else
+                    {
+           <div class="form-group" id="MainBox">
+                        <label >Select Main Category</label>
+                        <select class="form-control" name="mainCatId">
+                            @foreach (Category category in ViewBag.MainCategories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+
+                        </select>
+                    </div>
+                        
+                    }
+
+
+
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <a asp-action="Index" class="btn btn-light">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+          @section Scripts{
+                       <partial name="_ValidationScriptsPartial" />
+ 
+             }
+        
+
+
+    

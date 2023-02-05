@@ -1,0 +1,129 @@
+﻿@model Product
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create Product</h4>
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                <form method="post" enctype="multipart/form-data" class="forms-sample">
+                    <div class="form-group">
+                        <label asp-for="Photos"></label>
+                        <input asp-for="Photos">
+                        <span asp-validation-for="Photos" class="alert-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control">
+                        <span asp-validation-for="Name" class="alert-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price"></label>
+                        <input asp-for="Price" class="form-control">
+                        <span asp-validation-for="Price" class="alert-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Rate"></label>
+                        <input asp-for="Rate" class="form-control">
+                        <span asp-validation-for="Rate" class="alert-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductDetail.Brand"></label>
+                        <input asp-for="ProductDetail.Brand" class="form-control">
+                        <span asp-validation-for="ProductDetail.Brand" class="alert-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductDetail.Tags"></label>
+                        <input asp-for="ProductDetail.Tags" class="form-control">
+                        <span asp-validation-for="ProductDetail.Tags" class="alert-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductDetail.Tax"></label>
+                        <input asp-for="ProductDetail.Tax" class="form-control">
+                        <span asp-validation-for="ProductDetail.Tax" class="alert-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductDetail.Description"></label>
+                        <textarea asp-for="ProductDetail.Description" class="form-control"><</textarea>
+                        <span asp-validation-for="ProductDetail.Description" class="alert-danger"></span>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label>Select Main Category</label>
+                        <select class="form-control" id="mainCatId" name="mainCatId">
+                            @foreach (Category category in ViewBag.MainCategories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Child Category</label>
+                        <select class="form-control" id="childCatId"   name="childCatId">
+                            @foreach (Category category in ViewBag.ChildCategories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+
+                        </select>
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <a asp-action="Index" class="btn btn-light">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#ProductDetail_Description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+      <script>
+                
+           $(document).on("change", "#mainCatId", () => {
+               //console.log($("#mainCatId").val())
+               $.ajax({
+                   url: "/Admin/Products/LoadChildCategories/",
+                   type:"get",
+                   data: {
+
+                       "mainId": $("#mainCatId").val()
+                   },
+                   success: function(res) {
+
+           
+                       $("#childCatId").empty()
+                       $("#childCatId").append(res)
+                   }
+
+
+               })
+             });
+                 </script>
+             }
+
+
+
+
